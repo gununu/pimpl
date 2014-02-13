@@ -2,8 +2,9 @@ pimpl
 =====
 
 "pimpl" is C++11 simple pimpl idiom library using std::unique_ptr.
+This library has value semantics.
 
-pimpl idiom can reduce dependency among source files and make compiling faster.
+Pimpl idiom can reduce dependency among source files and make compiling faster.
 
 ###Usage
 See test.cpp test.hpp
