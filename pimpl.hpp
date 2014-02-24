@@ -68,7 +68,7 @@ pimpl<T> make_pimpl(Args&&... args)
 }
 
 template <class T>
-void swap(pimpl<T>& lhs, pimpl<T>& rhs) {
+void swap(pimpl<T>& lhs, pimpl<T>& rhs) noexcept {
     lhs.swap(rhs);
 }
 
