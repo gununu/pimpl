@@ -1,7 +1,7 @@
 pimpl
 =====
 
-"pimpl" is C++11 simple pimpl idiom library using std::unique_ptr.
+"pimpl" is C++11 simple pimpl idiom library using std::unique_ptr.  
 This library has value semantics.
 
 Pimpl idiom can reduce dependency among source files and make compiling faster.
@@ -43,6 +43,6 @@ template <class T, class... Args>
 pimpl<T> make_pimpl(Args&&... args)
 
 template <class T>
-void swap(pimpl<T>& lhs, pimpl<T>& rhs)
+void swap(pimpl<T>& lhs, pimpl<T>& rhs) noexcept
 }
 ```
