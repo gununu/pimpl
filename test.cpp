@@ -11,7 +11,7 @@ class implement {
 };
 
 
-sample::sample(){}
+sample::sample(){} //"pimpl<implement> pvalue" is created implicitly, so need definition of "implement" class.
 
 void sample::func() {
     pvalue->method();
