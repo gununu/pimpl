@@ -8,62 +8,98 @@ namespace gununu {
 
 struct pimpl_noinit_t{};
 
+namespace detail {
+struct holder {
+    holder(){};
+    virtual ~holder(){};
+    virtual holder* clone() = 0;
+    virtual void destroy() = 0;
+    virtual void* get() = 0;
+};
+
+template <class T>
+struct holder_t : public holder {
+    template <class... Args>
+    holder_t(Args&&... args) : obj(std::forward<Args>(args)...) {}
+    holder* clone() override {
+        return new holder_t<T>(obj);
+    }
+
+    void destroy() override {
+        (void)sizeof(T);
+        std::default_delete<holder_t<T>>()(this);
+    }
+
+    void* get() override {
+        return static_cast<void*>(&obj);
+    }
+private:
+    T obj;
+};
+} //namespace detail
+
 template <class T>
 class pimpl {
 public:
-    pimpl(): ptr_(new T()) {}
-    ~pimpl() { incomplete_check(); }
+    pimpl(): ptr_(new detail::holder_t<T>()) {}
+    ~pimpl() { if (ptr_) ptr_->destroy(); }
     constexpr pimpl(pimpl_noinit_t) noexcept {}
 
-    pimpl(pimpl&&) noexcept = default;
-    pimpl(pimpl const& rhs) {
+    pimpl(pimpl&& rhs) noexcept : ptr_(nullptr) {
+        *this = std::move(rhs);
+    }
+    pimpl(pimpl const& rhs) : ptr_(nullptr){
         *this = rhs;
     }
 
     explicit pimpl(T const& v) {
-        ptr_.reset(new T(v));
+        ptr_ = new detail::holder_t<T>(v);
     }
     explicit pimpl(T&& v) {
-        ptr_.reset(new T(std::move(v)));
+        ptr_ = new detail::holder_t<T>(std::move(v));
     }
 
     T* get() const noexcept {
-        return ptr_.get();
+        return static_cast<T*>(ptr_->get());
     }
 
     T& operator *() const {
-        return *ptr_.get();
+        return *get();
     }
     T* operator ->() const noexcept {
-        return ptr_.get();
+        return get();
     }
     
     explicit operator bool() const noexcept {
-        return ptr_.operator bool();
+        return !!ptr_;
     }
 
     void swap(pimpl& rhs) noexcept {
-        ptr_.swap(rhs.ptr_);
+        std::swap(ptr_, rhs.ptr_);
     }
 
-    pimpl& operator = (pimpl&&) noexcept = default;
+    pimpl& operator = (pimpl&& rhs) noexcept {
+        swap(rhs);
+        return *this;
+    }
     pimpl& operator = (pimpl const& rhs) {
-        ptr_.reset(rhs ? new T(*rhs.get()) : nullptr);
+        auto* cloned = (rhs ? rhs.ptr_->clone() : nullptr);
+        if (ptr_) ptr_->destroy();
+        ptr_ = cloned;  
         return *this;
     }
 private: 
     template <class T2, class... Args2>
     friend pimpl<T2> make_pimpl(Args2&&...);
-    void incomplete_check() { (void)sizeof(T); }
 private:
-    std::unique_ptr<T> ptr_;
+    detail::holder* ptr_;
 };
 
 template <class T, class... Args>
 pimpl<T> make_pimpl(Args&&... args)
 {
     pimpl<T> v(pimpl_noinit_t{});
-    v.ptr_.reset(new T(std::forward<Args>(args)...));
+    v.ptr_ = new detail::holder_t<T>(std::forward<Args>(args)...);
     return v;
 }
 
