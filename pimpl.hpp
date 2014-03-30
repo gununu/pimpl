@@ -8,6 +8,8 @@ namespace gununu {
 
 struct pimpl_noinit_t{};
 
+constexpr pimpl_noinit_t pimpl_noinit;
+
 namespace detail {
 struct holder {
     holder(){};
@@ -98,7 +100,7 @@ private:
 template <class T, class... Args>
 pimpl<T> make_pimpl(Args&&... args)
 {
-    pimpl<T> v(pimpl_noinit_t{});
+    pimpl<T> v(pimpl_noinit);
     v.ptr_ = new detail::holder_t<T>(std::forward<Args>(args)...);
     return v;
 }
