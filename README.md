@@ -15,6 +15,8 @@ namespace gununu {
 
 struct pimpl_noinit_t{};
 
+constexpr pimpl_noinit_t pimpl_noinit;
+
 template <class T>
 class pimpl {
 public:
