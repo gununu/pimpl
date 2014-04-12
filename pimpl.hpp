@@ -45,7 +45,7 @@ class pimpl {
 public:
     pimpl(): ptr_(new detail::holder_t<T>()) {}
     ~pimpl() { if (ptr_) ptr_->destroy(); }
-    constexpr pimpl(pimpl_noinit_t) noexcept {}
+    constexpr pimpl(pimpl_noinit_t) noexcept : ptr_(nullptr) {}
 
     pimpl(pimpl&& rhs) noexcept : ptr_(nullptr) {
         *this = std::move(rhs);
