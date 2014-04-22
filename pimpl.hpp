@@ -45,12 +45,12 @@ class pimpl {
 public:
     pimpl(): ptr_(new detail::holder_t<T>()) {}
     ~pimpl() { if (ptr_) ptr_->destroy(); }
-    constexpr pimpl(pimpl_noinit_t) noexcept : ptr_(nullptr) {}
+    constexpr pimpl(pimpl_noinit_t) noexcept {}
 
-    pimpl(pimpl&& rhs) noexcept : ptr_(nullptr) {
+    pimpl(pimpl&& rhs) noexcept {
         *this = std::move(rhs);
     }
-    pimpl(pimpl const& rhs) : ptr_(nullptr){
+    pimpl(pimpl const& rhs) {
         *this = rhs;
     }
 
@@ -94,7 +94,7 @@ private:
     template <class T2, class... Args2>
     friend pimpl<T2> make_pimpl(Args2&&...);
 private:
-    detail::holder* ptr_;
+    detail::holder* ptr_ = nullptr;
 };
 
 template <class T, class... Args>
