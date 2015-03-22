@@ -1,5 +1,6 @@
 pimpl
 =====
+[![Build Status](https://travis-ci.org/gununu/pimpl.svg)](https://travis-ci.org/gununu/pimpl)
 
 "pimpl" is C++11 simple pimpl idiom library.  
 This library has value semantics.
@@ -8,6 +9,9 @@ Pimpl idiom can reduce dependency among source files and make compiling faster.
 
 ###Usage
 See test.cpp test.hpp
+
+###License
+Public Domain
 
 ###Interface
 ```c++
