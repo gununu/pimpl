@@ -6,7 +6,7 @@
 
 namespace gununu {
 
-struct pimpl_noinit_t{};
+struct pimpl_noinit_t{ constexpr pimpl_noinit_t(){} };
 
 constexpr pimpl_noinit_t pimpl_noinit;
 
