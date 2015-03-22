@@ -1,4 +1,4 @@
-#include "pimpl.hpp"
+#include "../pimpl.hpp"
 
 
 class implement; //declaration only
