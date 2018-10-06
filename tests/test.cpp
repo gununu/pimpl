@@ -2,16 +2,16 @@
 #include <iostream>
 
 //need definition before used by sample class.
-class implement {
+class implementation {
     public:
-    implement():val(0){}
-    implement(int v):val(v){}
+    implementation():val(0){}
+    implementation(int v):val(v){}
     void method(){}
     int val;
 };
 
 
-sample::sample(){} //"pimpl<implement> pvalue" is created implicitly, so need definition of "implement" class.
+sample::sample(){} //"pimpl<implementation> pvalue" is implicitly created here, so need definition of "implementation" class before this.
 
 void sample::func() {
     pvalue->method();
@@ -23,8 +23,8 @@ void sample::func() {
 
     sample s;
     swap(pvalue, s.pvalue);
-    pvalue = gununu::make_pimpl<implement>();
+    pvalue = gununu::make_pimpl<implementation>();
     if (pvalue) {}
-    pvalue = gununu::pimpl<implement>(implement(3));
-    std::cout << pvalue->val;
+    pvalue = gununu::pimpl<implementation>(implementation(3));
+    std::cout << "value: " << pvalue->val << std::endl;
 }

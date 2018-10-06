@@ -5,15 +5,75 @@ pimpl
 "pimpl" is C++11 simple pimpl idiom library.  
 This library has value semantics.
 
-Pimpl idiom can reduce dependency among source files and make compiling faster.
+Pimpl idiom can reduce dependency among source files and make compilation faster.
 
-###Usage
+### Usage
+1. Declare a prototype of a heavy class in a header file that would be included in many places.
+```
+// lightweight.hpp
+class heavy;
+```
+
+2. Define a gununu::pimpl<heavy> object in the header file.
+```
+// lightweight.hpp
+#include <gununu/pimpl.hpp>
+class heavy;
+
+class lightweight {
+public:
+lightweight();
+
+gununu::pimpl<heavy> object;
+void method();
+};
+```
+
+3. Define or include the implementation of the heavy in a source file.
+```
+// lightweight.cpp
+#include "lightweight.hpp"
+#include "heavy.hpp"
+```
+
+4. Construct the object in the source file.
+```
+// lightweight.cpp
+#include "lightweight.hpp"
+#include "heavy.hpp"
+some::some() : object() {}
+```
+
+5. Use the object in the source file.
+```
+// lightweight.cpp
+#include "lightweight.hpp"
+#include "heavy.hpp"
+some::some() : object() {}
+
+void some::method() {
+    object->XXXXXX();
+    // etc..
+}
+
+```
+
+6. Now, you can use the lightweight class without including the heavy class. Congrats!
+```
+// main.cpp
+#include "lightweight.hpp"
+int main() {
+    lightweight lw;
+    lw.method();
+}
+```
+
 See test.cpp test.hpp
 
-###License
+### License
 Public Domain
 
-###Interface
+### Interface
 ```c++
 namespace gununu {
 

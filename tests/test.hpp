@@ -1,13 +1,14 @@
 #include "../pimpl.hpp"
 
 
-class implement; //declaration only
+class implementation; //declaration only
 
 class sample {
     public:
-    sample(); //need separation of constructor when without pimpl_noinit argument.
+    sample(); //Define this constructor body to a cpp file, unless constructing the pimpl with a pimpl_noinit argument.
 
-    gununu::pimpl<implement> pvalue;
+    gununu::pimpl<implementation> pvalue;
 
+    // If you want to use the pimpl object, define a function body at a cpp file.
     void func();
 };
