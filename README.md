@@ -41,7 +41,7 @@ void method();
 // lightweight.cpp
 #include "lightweight.hpp"
 #include "heavy.hpp"
-some::some() : object() {}
+lightweight::lightweight() : object() {}
 ```
 
 5. Use the object in the source file.
@@ -49,7 +49,7 @@ some::some() : object() {}
 // lightweight.cpp
 #include "lightweight.hpp"
 #include "heavy.hpp"
-some::some() : object() {}
+lightweight::lightweight() : object() {}
 
 void some::method() {
     object->XXXXXX();
