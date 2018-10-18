@@ -51,7 +51,7 @@ lightweight::lightweight() : object() {}
 #include "heavy.hpp"
 lightweight::lightweight() : object() {}
 
-void some::method() {
+void lightweight::method() {
     object->XXXXXX();
     // etc..
 }
